@@ -10,11 +10,11 @@ from tkinter import messagebox
 
 DATA_FILE = "users.json"
 USERDATA_DIR = "user_data"
-API_KEY = "NaRf6zGy49uQFewShogHlM0hGztzCGRR"
+API_KEY = "holiday-API-key"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "users.json")
 USERDATA_PATH = os.path.join(BASE_DIR, USERDATA_DIR)
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = 'openAI-API-key'
 API_URL = 'https://api.openai.com/v1/chat/completions'
 
 def ensure_userdata_dir():
@@ -31,6 +31,8 @@ def user_data_path(username):
 
 def load_user_tasks(username):
     """Load tasks for a user from their file."""
+    if username.lower() == "guest":
+        return {}
     ensure_userdata_dir()
     path = user_data_path(username)
     if not os.path.exists(path):
@@ -43,6 +45,8 @@ def load_user_tasks(username):
 
 def save_user_tasks(username, tasks):
     """Save tasks for a user to their file."""
+    if username.lower() == "guest":
+        return
     ensure_userdata_dir()
     path = user_data_path(username)
     with open(path, "w") as f:
@@ -347,7 +351,6 @@ class CustomCalendar:
                         and day == self.today.day
                     )
                     btn_text = f"{day}\n🎉" if holiday_name else f"{day}\n{task_count} tasks" if task_count else str(day)
-
 
                     if is_today:
                         btn_color = "#00c896"
